@@ -65,4 +65,3 @@ func main() {
 	http.ListenAndServe(":8000", nil) 
 }
 
-// Location[1:len(Location) - 1]
