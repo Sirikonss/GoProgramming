@@ -35,13 +35,13 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func newsAggHandler(w http.ResponseWriter, r *http.Request) {
 	var s Sitemapindex
 	var n News
-	resp, _ := http.Get("https://www.washingtonpost.com/news-sitemap-index.xml")
+	resp, _ := http.Get("https://www.washingtonpost.com/news-sitemaps/index.xml")
 	bytes, _ := ioutil.ReadAll(resp.Body)
 	xml.Unmarshal(bytes, &s)
 	news_map := make(map[string]NewsMap)
 
 	for _, Location := range s.Locations {
-		resp, _ := http.Get(Location)
+		resp, _ := http.Get(Location[1:len(Location) - 1])
 		bytes, _ := ioutil.ReadAll(resp.Body)
 		xml.Unmarshal(bytes, &n)
 
@@ -64,3 +64,5 @@ func main() {
 	http.HandleFunc("/agg/", newsAggHandler)
 	http.ListenAndServe(":8000", nil) 
 }
+
+// Location[1:len(Location) - 1]
